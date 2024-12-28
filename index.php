@@ -1,27 +1,17 @@
 <?php
-session_start();
 
-if (isset($_POST['submit'])) {
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
-    $password = $_POST['password'];
+$file = 'extras/users.txt';
 
-    if ($username == "essien" && $password == "pass") {
-        $_SESSION['username'] = $username;
-        header("Location: /extras/dashboard.php");
-    } else {
-        echo 'invalid login credentials';
-    }
+if (file_exists($file)) {
+    // echo readfile($file);
+    $handle = fopen($file, 'r');
+    $content = fread($handle, filesize($file));
+    fclose($handle);
+    echo $content;
+} else {
+    $handle = fopen($file, 'w');
+    $content = 'Benjamin' . PHP_EOL . 'Samuel' . PHP_EOL . 'Prince';
+    fwrite($handle, $content);
+    fclose($handle);
+    echo $handle;
 }
-?>
-
-<form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
-    <div>
-        <label for="username">Username: </label>
-        <input type="text" name="username">
-    </div>
-    <div>
-        <label for="password">Password: </label>
-        <input type="password" name="password">
-    </div>
-    <input type="submit" name="submit" value="submit">
-</form>
